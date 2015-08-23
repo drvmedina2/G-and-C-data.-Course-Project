@@ -31,7 +31,7 @@ prueba_entrSuj <- rbind(entr_suj, pru_suj)
 
 
 
-label the data set with descriptive variables
+
 prueba_entr2[, 1] <- et_activ[prueba_entr2[, 1], 2]
 names(prueba_entr2) <- "activity"
 names(prueba_entrSuj) <- "subject"
