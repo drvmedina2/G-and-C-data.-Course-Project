@@ -1,13 +1,13 @@
 # G-and-C-data.-Course-Project
 
 
-set working directory
+
 setwd("~/UCI HAR Dataset 2")
 
-Open packages to work with
+
 library(plyr); library(dplyr)
 
-Read and open data sets in R, assign names to the columns in the appropriate data sets
+
 caract <- read.table("./features.txt")
 et_activ <- read.table("./activity_labels.txt")
 
@@ -25,13 +25,12 @@ colnames(entr_suj) <- "ident_suj"
 colnames(entrX) <- caract[ ,2]
 colnames(entrY) <- "ident_act"
 
-##Merge data sets with x and y values based on tests and train parameters
 prueba_entr1 <- rbind(pruebaX, entrX)
 prueba_entr2 <- rbind(pruebaY, entrY)
 prueba_entrSuj <- rbind(entr_suj, pru_suj)
 
 
-Assign descriptive names to activities on data set, correct them and
+
 label the data set with descriptive variables
 prueba_entr2[, 1] <- et_activ[prueba_entr2[, 1], 2]
 names(prueba_entr2) <- "activity"
@@ -41,14 +40,14 @@ prueba_entr2[, 1] <- et_activ[prueba_entr2[, 1], 2]
 names(prueba_entr2) <- "activity"
 names(prueba_entrSuj) <- "subject"
 
-Create the final and complete data set
+
 resumen <- cbind(prueba_entr1, prueba_entr2, prueba_entrSuj)
 
-Using dplyr, get rid of duplicated columns and extract only the mean and std columns
+
 mean_std_coldupl <- resumen[ !duplicated(names(resumen)) ]
 resumen_mean_std <- select(mean_std_coldupl, matches("mean|std|activity|subject"))
 
-Using plyr, and write.table, create a .txt file with the tidy data set
+
 promedios <- ddply(resumen_mean_std, .(subject, activity), function(x) colMeans(x[, 1:66]))
 
 write.table(promedios, "./promedios.txt", row.names = FALSE)
